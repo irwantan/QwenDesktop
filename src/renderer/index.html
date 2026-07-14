@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+  <title>Qwen Code Desktop</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1>🤖 Qwen Code</h1>
+        <p class="subtitle">Desktop with Sandbox</p>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" data-view="sandbox">
+          <span class="icon">📁</span>
+          <span>Sandbox Folders</span>
+        </button>
+        <button class="nav-btn" data-view="files">
+          <span class="icon">📂</span>
+          <span>File Browser</span>
+        </button>
+        <button class="nav-btn" data-view="terminal">
+          <span class="icon">💻</span>
+          <span>Terminal</span>
+        </button>
+        <button class="nav-btn" data-view="settings">
+          <span class="icon">⚙️</span>
+          <span>Settings</span>
+        </button>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span id="qwen-status">Checking Qwen CLI...</span>
+        </div>
+        <p class="version-info" id="app-version">v1.0.0</p>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Sandbox View -->
+      <div class="view active" id="view-sandbox">
+        <div class="view-header">
+          <h2>🔒 Sandbox Configuration</h2>
+          <p>Manage folders that Qwen Code can access</p>
+        </div>
+        
+        <div class="sandbox-info">
+          <div class="info-card">
+            <h3>🛡️ What is Sandbox?</h3>
+            <p>Sandbox membatasi akses Qwen Code hanya ke folder yang Anda izinkan. 
+               System folders seperti Windows, Program Files tidak dapat diakses untuk keamanan.</p>
+          </div>
+        </div>
+        
+        <div class="add-folder-section">
+          <button id="btn-add-folder" class="btn-primary">
+            <span class="icon">➕</span>
+            Add Sandbox Folder
+          </button>
+        </div>
+        
+        <div class="sandbox-folders">
+          <h3>Allowed Folders:</h3>
+          <div id="sandbox-folder-list" class="folder-list">
+            <p class="empty-state">No sandbox folders configured. Click "Add Sandbox Folder" to get started.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- File Browser View -->
+      <div class="view" id="view-files">
+        <div class="view-header">
+          <h2>📂 File Browser</h2>
+          <p>Browse and edit files within sandbox</p>
+        </div>
+        
+        <div class="file-browser">
+          <div class="breadcrumb" id="breadcrumb">
+            <button class="breadcrumb-btn" data-path="">🏠 Home</button>
+          </div>
+          
+          <div class="file-list" id="file-list">
+            <div class="empty-state">
+              <p>Select a sandbox folder to browse files</p>
+              <button class="btn-secondary" onclick="showView('sandbox')">Go to Sandbox Settings</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Terminal View -->
+      <div class="view" id="view-terminal">
+        <div class="view-header">
+          <h2>💻 Terminal</h2>
+          <p>Run Qwen CLI commands</p>
+        </div>
+        
+        <div class="terminal-container">
+          <div class="terminal-toolbar">
+            <select id="terminal-cwd">
+              <option value="">Select working directory...</option>
+            </select>
+            <button id="btn-run-command" class="btn-primary">▶ Run</button>
+          </div>
+          
+          <div class="terminal-input-area">
+            <span class="prompt">$ qwen</span>
+            <input type="text" id="terminal-input" placeholder="Enter command arguments..." autocomplete="off">
+          </div>
+          
+          <div class="terminal-output" id="terminal-output">
+            <div class="welcome-message">
+              <p>Welcome to Qwen Code Desktop Terminal!</p>
+              <p>Type your command and click Run or press Enter.</p>
+              <p class="hint">Example: <code>init my-project</code> or <code>--help</code></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Settings View -->
+      <div class="view" id="view-settings">
+        <div class="view-header">
+          <h2>⚙️ Settings</h2>
+          <p>Application settings and information</p>
+        </div>
+        
+        <div class="settings-section">
+          <h3>Application Info</h3>
+          <div class="settings-grid">
+            <div class="setting-item">
+              <label>Version:</label>
+              <span id="setting-version">-</span>
+            </div>
+            <div class="setting-item">
+              <label>Platform:</label>
+              <span id="setting-platform">-</span>
+            </div>
+            <div class="setting-item">
+              <label>Architecture:</label>
+              <span id="setting-arch">-</span>
+            </div>
+            <div class="setting-item">
+              <label>Sandbox Folders:</label>
+              <span id="setting-folders">-</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="settings-section">
+          <h3>Sandbox Security</h3>
+          <div class="blocked-paths">
+            <p>System folders that are always blocked:</p>
+            <ul id="blocked-paths-list">
+              <li>C:\Windows</li>
+              <li>C:\Program Files</li>
+              <li>C:\Program Files (x86)</li>
+              <li>C:\$Recycle.Bin</li>
+              <li>C:\System Volume Information</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+  
+  <script src="renderer.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{
+  "name": "qwen-code-desktop",
+  "version": "1.0.0",
+  "description": "Qwen Code Desktop App with Sandbox for Windows",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64",
+    "build:portable": "electron-builder --win portable --x64",
+    "pack": "electron-builder --dir"
+  },
+  "author": "Irwan",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.qwen.code.desktop",
+    "productName": "Qwen Code Desktop",
+    "directories": {
+      "output": "build/dist"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Qwen Code Desktop"
+    },
+    "extraMetadata": {
+      "main": "src/main/main.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/irwan/qwen-code-desktop.git"
+  }
+}
